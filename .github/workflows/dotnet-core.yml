@@ -42,6 +42,6 @@ jobs:
         PROJECT_FILE_PATH: SnakeAI-Hamiltonian/SnakeAI-Hamiltonian.csproj
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish to Github
-      run: dotnet nuget push ./SnakeAI-Hamiltonian/out/*.nupkg -k ${GITHUB_TOKEN} -s https://nuget.pkg.github.com/TheSwerik/index.json --skip-duplicate -n true 
+      run: dotnet nuget push ./SnakeAI-Hamiltonian/out/*.nupkg -s https://nuget.pkg.github.com/TheSwerik/index.json -k ${GITHUB_TOKEN} --skip-duplicate -n true 
       env:
         GITHUB_TOKEN: ${{ secrets.GHUB_API_KEY }}
