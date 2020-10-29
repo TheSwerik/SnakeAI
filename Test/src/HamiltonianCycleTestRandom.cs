@@ -4,10 +4,11 @@ using SnakeAI_Hamiltonian;
 
 namespace Test
 {
-    public class HamiltonianCycleTest
+    public class HamiltonianCycleTestRandom
     {
         private HamiltonianCycle _hamiltonian;
-        [SetUp] public void Setup() { _hamiltonian = new HamiltonianCycle(); }
+
+        [SetUp] public void Setup() { _hamiltonian = new HamiltonianCycle {Random = true}; }
 
         [Test]
         public void Test2X2()
