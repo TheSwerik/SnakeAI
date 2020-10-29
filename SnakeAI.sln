@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnakeAI-Hamiltonian", "SnakeAI-Hamiltonian\SnakeAI-Hamiltonian.csproj", "{7AFD6BFD-F0E3-4859-BAB1-13F5ED03B89A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{90C58197-D415-4F49-A251-6F9EC4ADA618}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AFD6BFD-F0E3-4859-BAB1-13F5ED03B89A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AFD6BFD-F0E3-4859-BAB1-13F5ED03B89A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AFD6BFD-F0E3-4859-BAB1-13F5ED03B89A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFD6BFD-F0E3-4859-BAB1-13F5ED03B89A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90C58197-D415-4F49-A251-6F9EC4ADA618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90C58197-D415-4F49-A251-6F9EC4ADA618}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90C58197-D415-4F49-A251-6F9EC4ADA618}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90C58197-D415-4F49-A251-6F9EC4ADA618}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
