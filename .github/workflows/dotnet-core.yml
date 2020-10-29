@@ -42,8 +42,6 @@ jobs:
         PROJECT_FILE_PATH: SnakeAI-Hamiltonian/SnakeAI-Hamiltonian.csproj
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish to Github
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        PROJECT_FILE_PATH: SnakeAI-Hamiltonian/SnakeAI-Hamiltonian.csproj
-        NUGET_KEY: ${{secrets.GHUB_API_KEY}}
-        NUGET_SOURCE: https://nuget.pkg.github.com/TheSwerik
+      run: dotnet nuget push ./SnakeAI-Hamiltonian/out/*.nupkg -k ${GITHUB_TOKEN} -s https://nuget.pkg.github.com/TheSwerik/index.json --skip-duplicate --no-symbols 
+      env:
+        GITHUB_TOKEN: ${{ secrets.GHUB_API_KEY }}
