@@ -36,6 +36,7 @@ namespace Test
         }
 
         [Test]
+        [Timeout(30000)]
         public void TestRandomFail()
         {
             var size = new IntVector2(new Random().Next(2, 10), new Random().Next(2, 10));
