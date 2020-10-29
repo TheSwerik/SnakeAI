@@ -3,7 +3,15 @@
     <PropertyGroup>
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AssemblyName>SnakeAI</AssemblyName>
+        <id>SnakeAI</id>
         <Version>1.0</Version>
+        <Authors>Swerik</Authors>
+        <Company>Swerik</Company>
+        <projectUrl>https://github.com/TheSwerik/SnakeAI</projectUrl>
+        <repository>https://github.com/TheSwerik/SnakeAI</repository>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <tags>Snake AI</tags>
     </PropertyGroup>
 
 </Project>
