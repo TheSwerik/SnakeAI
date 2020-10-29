@@ -39,13 +39,13 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Pack File
-      run: dotnet pack SnakeAI-Hamiltonian/.nuspec
+      run: dotnet pack SnakeAI-Hamiltonian/SnakeAI-Hamiltonian.csproj -c Release
     - name: Publish to NuGet
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         PROJECT_FILE_PATH: SnakeAI-Hamiltonian/SnakeAI-Hamiltonian.csproj
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish to Github
-      run: dotnet nuget push *.nupkg -s https://nuget.pkg.github.com/TheSwerik/index.json -k ${GITHUB_TOKEN} --skip-duplicate -n true 
+      run: dotnet nuget push SnakeAI-Hamiltonian/bin/*.nupkg -s https://nuget.pkg.github.com/TheSwerik/index.json -k ${GITHUB_TOKEN} --skip-duplicate -n true 
       env:
         GITHUB_TOKEN: ${{ secrets.GHUB_API_KEY }}
