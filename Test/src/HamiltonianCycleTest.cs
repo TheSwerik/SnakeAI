@@ -40,6 +40,15 @@ namespace Test
         }
 
         [Test]
+        public void Test6X7From55Success()
+        {
+            var size = new IntVector2(6, 7);
+            var startPos = new IntVector2(5, 5);
+            foreach (var pos in _hamiltonian.CalculateCycle(size, startPos)) Console.Write(pos + ", ");
+            Assert.Pass();
+        }
+
+        [Test]
         [Timeout(30000)]
         // [Ignore("This has a high chance of never completing.")]
         public void TestRandomSuccess()

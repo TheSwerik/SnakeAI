@@ -4,6 +4,8 @@ namespace SnakeAI_Hamiltonian
 {
     public struct IntVector2
     {
+        public static readonly IntVector2 Default = new IntVector2(-1, -1);
+
         public IntVector2(int x, int y)
         {
             X = x;

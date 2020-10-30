@@ -15,15 +15,18 @@ namespace SnakeAI_Hamiltonian
 
         public IEnumerable<IntVector2> CalculateCycle(IntVector2 size)
         {
+            return CalculateCycle(size, IntVector2.Default);
+        }
+
+        public IEnumerable<IntVector2> CalculateCycle(IntVector2 size, IntVector2 startPos)
+        {
             _path = new Path(size.Area);
             _vertices = new IntVector2[size.Area];
             for (var x = 0; x < size.X; x++)
             for (var y = 0; y < size.Y; y++)
                 _vertices[x * size.Y + y] = new IntVector2(x, y);
 
-            _startVertex = _vertices[_random.Next(_vertices.Length)];
-            // _startVertex = _vertices.First(v => v.X == 2 && v.Y == 1);
-            Console.WriteLine(_startVertex);
+            _startVertex = startPos.Equals(IntVector2.Default) ? _vertices[_random.Next(_vertices.Length)] : startPos;
             if (IterativePathCalculation(_startVertex)) return _path.ToList();
             throw new CouldNotFindCycleException();
         }
