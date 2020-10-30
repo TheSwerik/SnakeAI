@@ -7,7 +7,7 @@ namespace SnakeAI_Hamiltonian
     public class HamiltonianCycle
     {
         private readonly Random _random;
-        private List<IntVector2> _markedVertices;
+        private Path _path;
         private IntVector2 _startVertex;
         private IntVector2[] _vertices;
         public HamiltonianCycle() { _random = new Random(); }
@@ -15,7 +15,7 @@ namespace SnakeAI_Hamiltonian
 
         public IEnumerable<IntVector2> CalculateCycle(IntVector2 size)
         {
-            _markedVertices = new List<IntVector2>(size.Area);
+            _path = new Path(size.Area);
             _vertices = new IntVector2[size.Area];
             for (var x = 0; x < size.X; x++)
             for (var y = 0; y < size.Y; y++)
@@ -24,7 +24,7 @@ namespace SnakeAI_Hamiltonian
             _startVertex = _vertices[_random.Next(_vertices.Length)];
             _startVertex = _vertices.First(v => v.X == 2 && v.Y == 1);
             Console.WriteLine(_startVertex);
-            if (IterativePathCalculation(_startVertex)) return _markedVertices.ToArray();
+            if (IterativePathCalculation(_startVertex)) return _path.ToList();
             throw new CouldNotFindCycleException();
         }
 
@@ -34,7 +34,7 @@ namespace SnakeAI_Hamiltonian
             var tried = new List<List<IntVector2>>();
             while (true)
             {
-                if (!_markedVertices.Contains(vertex)) _markedVertices.Add(vertex);
+                if (!_path.Contains(vertex)) _path.Add(vertex);
                 var remainingVertices = GetAdjacentPositions(vertex, tried).ToList();
 
                 if (remainingVertices.Count > 0)
@@ -48,10 +48,10 @@ namespace SnakeAI_Hamiltonian
                     return true; // Finished
 
                 // Go a back:
-                tried.Add(_markedVertices.ToList());
-                _markedVertices.Remove(vertex);
-                if (!_markedVertices.Any()) return false;
-                vertex = _markedVertices.Last();
+                tried.Add(_path.ToList());
+                _path.RemoveTop();
+                if (!_path.Any()) return false;
+                vertex = _path.Top();
             }
         }
 
@@ -59,10 +59,9 @@ namespace SnakeAI_Hamiltonian
                                                              ICollection<List<IntVector2>> paths = null,
                                                              bool onlyUnMarked = true)
         {
-            return _vertices.Where(v => !(onlyUnMarked && IsMarked(v)) && vertex.IsAdjacent(v) &&
-                                        (paths == null || !paths.AnyMatch(_markedVertices)));
+            return _vertices.Where(v => !(onlyUnMarked && IsMarked(v)) && vertex.IsAdjacent(v));
         }
 
-        private bool IsMarked(IntVector2 vertex) { return _markedVertices.Contains(vertex); }
+        private bool IsMarked(IntVector2 vertex) { return _path.Contains(vertex); }
     }
 }
