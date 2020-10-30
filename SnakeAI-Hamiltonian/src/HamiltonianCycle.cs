@@ -22,6 +22,8 @@ namespace SnakeAI_Hamiltonian
                 _vertices[x * size.Y + y] = new IntVector2(x, y);
 
             _startVertex = _vertices[_random.Next(_vertices.Length)];
+            _startVertex = _vertices.First(v => v.X == 2 && v.Y == 1);
+            Console.WriteLine(_startVertex);
             if (IterativePathCalculation(_startVertex)) return _markedVertices.ToArray();
             throw new CouldNotFindCycleException();
         }
@@ -29,11 +31,10 @@ namespace SnakeAI_Hamiltonian
         private bool IterativePathCalculation(IntVector2 startVertex)
         {
             var vertex = startVertex;
-            var tried = new List<IntVector2>();
+            var tried = new List<List<IntVector2>>();
             while (true)
             {
                 if (!_markedVertices.Contains(vertex)) _markedVertices.Add(vertex);
-                if (!tried.Contains(vertex)) tried.Add(vertex);
                 var remainingVertices = GetAdjacentPositions(vertex, tried).ToList();
 
                 if (remainingVertices.Count > 0)
@@ -47,17 +48,19 @@ namespace SnakeAI_Hamiltonian
                     return true; // Finished
 
                 // Go a back:
+                tried.Add(_markedVertices.ToList());
                 _markedVertices.Remove(vertex);
                 if (!_markedVertices.Any()) return false;
                 vertex = _markedVertices.Last();
             }
         }
 
-        private IEnumerable<IntVector2> GetAdjacentPositions(IntVector2 vertex, ICollection<IntVector2> list = null,
+        private IEnumerable<IntVector2> GetAdjacentPositions(IntVector2 vertex,
+                                                             ICollection<List<IntVector2>> paths = null,
                                                              bool onlyUnMarked = true)
         {
             return _vertices.Where(v => !(onlyUnMarked && IsMarked(v)) && vertex.IsAdjacent(v) &&
-                                        (list == null || !list.Contains(v)));
+                                        (paths == null || !paths.AnyMatch(_markedVertices)));
         }
 
         private bool IsMarked(IntVector2 vertex) { return _markedVertices.Contains(vertex); }
