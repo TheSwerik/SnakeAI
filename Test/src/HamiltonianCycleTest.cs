@@ -79,7 +79,7 @@ namespace Test
         [TestCase(true)]
         [TestCase(false)]
         [Timeout(300_000)] // 5 minutes
-        // [Ignore("This has a high chance of taking a long time.")]
+        [Ignore("This has a high chance of taking a long time.")]
         public void TestRandomSuccess(bool random)
         {
             InitHamiltonian(random);
@@ -94,7 +94,7 @@ namespace Test
         [TestCase(true)]
         [TestCase(false)]
         [Timeout(300_000)] // 5 minutes
-        // [Ignore("This has a high chance of taking a long time.")]
+        [Ignore("This has a high chance of taking a long time.")]
         public void TestRandomFail(bool random)
         {
             InitHamiltonian(random);
