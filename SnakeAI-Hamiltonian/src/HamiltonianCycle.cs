@@ -7,44 +7,116 @@ namespace SnakeAI_Hamiltonian
     public class HamiltonianCycle
     {
         private readonly Random _random;
-        private List<IntVector2> _markedVertices;
-        private IntVector2 _startVertex;
+        private Path _path;
+        private List<Path> _triedPaths;
         private IntVector2[] _vertices;
         public HamiltonianCycle() { _random = new Random(); }
         public bool Random { get; set; }
 
         public IEnumerable<IntVector2> CalculateCycle(IntVector2 size)
         {
-            _markedVertices = new List<IntVector2>(size.Area);
+            return CalculateCycle(size, IntVector2.Default);
+        }
+
+        public IEnumerable<IntVector2> CalculateCycle(IntVector2 size, IntVector2 startVertex)
+        {
+            _path = new Path(size.Area);
+            _triedPaths = new List<Path>();
             _vertices = new IntVector2[size.Area];
             for (var x = 0; x < size.X; x++)
             for (var y = 0; y < size.Y; y++)
                 _vertices[x * size.Y + y] = new IntVector2(x, y);
 
-            _startVertex = _vertices[_random.Next(_vertices.Length)];
-            if (RecTest(_startVertex)) return _markedVertices.ToArray();
-            throw new CouldNotFindCycleException();
+            if (startVertex.Equals(IntVector2.Default)) startVertex = _vertices[_random.Next(_vertices.Length)];
+            if (!IterativePathCalculation(startVertex)) throw new CouldNotFindCycleException();
+
+            _triedPaths = null;
+            return _path.ToList();
         }
 
-        private bool RecTest(IntVector2 vertex)
+        private bool IterativePathCalculation(IntVector2 startVertex)
         {
-            _markedVertices.Add(vertex);
-            var remainingVertices = GetAdjacentPositions(vertex).ToList();
-            if (remainingVertices.Count <= 0 && _vertices.All(IsMarked) &&
-                GetAdjacentPositions(vertex, false).Contains(_startVertex)) return true;
+            _path.Add(startVertex);
+            while (!_path.IsEmpty())
+            {
+                var remainingAdjacentVertices = GetAdjacentVertices(_path.Top(), _triedPaths).ToList();
 
-            if (Random && remainingVertices.OrderBy(x => Guid.NewGuid()).Any(RecTest)) return true;
-            if (!Random && remainingVertices.Any(RecTest)) return true;
+                if (remainingAdjacentVertices.Count > 0)
+                {
+                    GoForward(remainingAdjacentVertices);
+                    continue;
+                }
 
-            _markedVertices.Remove(vertex);
+                if (IsFinished(startVertex)) return true;
+                GoBack();
+            }
+
             return false;
         }
 
-        private IEnumerable<IntVector2> GetAdjacentPositions(IntVector2 vertex, bool onlyUnMarked = true)
+        private void GoForward(IReadOnlyList<IntVector2> remainingAdjacentVertices)
         {
-            return _vertices.Where(v => !(onlyUnMarked && IsMarked(v)) && vertex.IsAdjacent(v));
+            var vertex = Random
+                             ? remainingAdjacentVertices.OrderBy(x => Guid.NewGuid()).First()
+                             : remainingAdjacentVertices[0];
+            if (!_path.Contains(vertex)) _path.Add(vertex);
+            if (!IsEveryRemainingVertexReachable(vertex)) GoBack();
         }
 
-        private bool IsMarked(IntVector2 vertex) { return _markedVertices.Contains(vertex); }
+        private void GoBack()
+        {
+            _triedPaths.Add(_path.Clone());
+            _path.RemoveTop();
+        }
+
+        #region Helper Methods
+
+        /// <summary>
+        ///     Checks whether the algorithm has finished.
+        ///     Zhe algorithm has finished if all vertices are in the path and the startVertex is a neighbor of the last Vertex.
+        /// </summary>
+        /// <param name="startVertex"></param>
+        /// <returns>If The Algorithm has finished.</returns>
+        private bool IsFinished(IntVector2 startVertex)
+        {
+            return _vertices.Length == _path.Length &&
+                   GetAdjacentVertices(_path.Top(), onlyUnMarked: false).Contains(startVertex);
+        }
+
+        private bool IsMarked(IntVector2 vertex) { return _path.Contains(vertex); }
+
+        private bool IsEveryRemainingVertexReachable(IntVector2 startVertex)
+        {
+            var marked = new List<IntVector2>(_vertices.Length);
+            marked.AddRange(_vertices.Where(IsMarked));
+
+            var neighbors = _vertices.Where(v => startVertex.IsAdjacent(v) && !marked.Contains(v)).ToList();
+            while (neighbors.Any())
+            {
+                marked.AddRange(neighbors);
+                var tempNeighbors = _vertices.Where(v =>
+                                                        !marked.Contains(v) &&
+                                                        neighbors.Any(n => n.IsAdjacent(v))).ToList();
+                neighbors = tempNeighbors;
+            }
+
+
+            return marked.Count == _vertices.Length;
+        }
+
+        private IEnumerable<IntVector2> GetAdjacentVertices(IntVector2 vertex, ICollection<Path> paths = null,
+                                                            bool onlyUnMarked = true)
+        {
+            return _vertices.Where(v =>
+                                   {
+                                       if (onlyUnMarked && IsMarked(v) || !vertex.IsAdjacent(v)) return false;
+                                       if (paths == null) return true;
+                                       var tempPath = _path.Clone();
+                                       tempPath.Add(v);
+                                       return paths.All(p => !p.Equals(tempPath));
+                                   });
+        }
+
+        #endregion
     }
 }

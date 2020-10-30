@@ -4,7 +4,7 @@
         <OutputType>Library</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <AssemblyName>SnakeAI</AssemblyName>
-        <Version>1.0</Version>
+        <Version>2.0</Version>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <NuspecFile>.nuspec</NuspecFile>
     </PropertyGroup>
