@@ -2,9 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <title>SnakeAI</title>
-        <description>Server Quickstart Package, Client Half</description>
+        <description>Hamiltonian Cycles Generator</description>
         <id>SnakeAI</id>
-        <version>1.0.0</version>
+        <version>2.0</version>
         <authors>Swerik</authors>
         <projectUrl>https://github.com/TheSwerik/SnakeAI</projectUrl>
         <repository type="git" url="https://github.com/TheSwerik/SnakeAI.git"/>
