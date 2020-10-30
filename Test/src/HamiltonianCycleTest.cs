@@ -18,6 +18,21 @@ namespace Test
 
         private void InitHamiltonian(bool random) { _hamiltonian.Random = random; }
 
+        private void PrintAndPass(IntVector2 size) { PrintAndPass(size, IntVector2.Default); }
+
+        private void PrintAndPass(IntVector2 size, IntVector2 startPos)
+        {
+            foreach (var pos in _hamiltonian.CalculateCycle(size, startPos)) Console.Write(pos + ", ");
+            Assert.Pass();
+        }
+
+        private void Fail(IntVector2 size)
+        {
+            Assert.Throws<CouldNotFindCycleException>(() => _hamiltonian.CalculateCycle(size));
+        }
+
+        #region Test Cases
+
         [TestCase(true)]
         [TestCase(false)]
         public void Test2X2Success(bool random)
@@ -25,8 +40,7 @@ namespace Test
             InitHamiltonian(random);
             var size = new IntVector2(2, 2);
 
-            foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
-            Assert.Pass();
+            PrintAndPass(size);
         }
 
         [TestCase(true)]
@@ -36,7 +50,7 @@ namespace Test
             InitHamiltonian(random);
             var size = new IntVector2(3, 3);
 
-            Assert.Throws<CouldNotFindCycleException>(() => _hamiltonian.CalculateCycle(size));
+            Fail(size);
         }
 
         [TestCase(true)]
@@ -46,8 +60,7 @@ namespace Test
             InitHamiltonian(random);
             var size = new IntVector2(3, 4);
 
-            foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
-            Assert.Pass();
+            PrintAndPass(size);
         }
 
         [TestCase(true)]
@@ -60,13 +73,12 @@ namespace Test
             var size = new IntVector2(6, 7);
             var startPos = new IntVector2(0, 0);
 
-            foreach (var pos in _hamiltonian.CalculateCycle(size, startPos)) Console.Write(pos + ", ");
-            Assert.Pass();
+            PrintAndPass(size, startPos);
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        [Timeout(60_000)] // 1 minute
+        [Timeout(300_000)] // 5 minutes
         // [Ignore("This has a high chance of taking a long time.")]
         public void TestRandomSuccess(bool random)
         {
@@ -76,13 +88,12 @@ namespace Test
             // size does not consist of 2 odd numbers.
 
             Console.WriteLine($"\n{size.X}x{size.Y}");
-            foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
-            Assert.Pass();
+            PrintAndPass(size);
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        [Timeout(60_000)] // 1 minute
+        [Timeout(300_000)] // 5 minutes
         // [Ignore("This has a high chance of taking a long time.")]
         public void TestRandomFail(bool random)
         {
@@ -92,8 +103,9 @@ namespace Test
             if (size.Y % 2 == 0) size.Y++;
             // size consists of 2 odd numbers.
 
-            Console.WriteLine($"\n{size.X}x{size.Y}");
-            Assert.Throws<CouldNotFindCycleException>(() => _hamiltonian.CalculateCycle(size));
+            Fail(size);
         }
+
+        #endregion
     }
 }
