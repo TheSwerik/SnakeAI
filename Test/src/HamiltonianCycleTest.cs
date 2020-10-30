@@ -26,7 +26,7 @@ namespace Test
 
         [Test]
         [Timeout(30000)]
-        [Ignore("This has a high chance of never completing.")]
+        // [Ignore("This has a high chance of never completing.")]
         public void TestRandomSuccess()
         {
             var size = new IntVector2(new Random().Next(2, 10), new Random().Next(2, 10));
@@ -38,7 +38,17 @@ namespace Test
 
         [Test]
         [Timeout(30000)]
-        [Ignore("This has a high chance of never completing.")]
+        // [Ignore("This has a high chance of never completing.")]
+        public void TestRandomSuccess74()
+        {
+            var size = new IntVector2(7, 4);
+            foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
+            Assert.Pass();
+        }
+
+        [Test]
+        [Timeout(30000)]
+        // [Ignore("This has a high chance of never completing.")]
         public void TestRandomFail()
         {
             var size = new IntVector2(new Random().Next(2, 10), new Random().Next(2, 10));

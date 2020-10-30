@@ -22,27 +22,42 @@ namespace SnakeAI_Hamiltonian
                 _vertices[x * size.Y + y] = new IntVector2(x, y);
 
             _startVertex = _vertices[_random.Next(_vertices.Length)];
-            if (RecursivePathCalculation(_startVertex)) return _markedVertices.ToArray();
+            if (IterativePathCalculation(_startVertex)) return _markedVertices.ToArray();
             throw new CouldNotFindCycleException();
         }
 
-        private bool RecursivePathCalculation(IntVector2 vertex)
+        private bool IterativePathCalculation(IntVector2 startVertex)
         {
-            _markedVertices.Add(vertex);
-            var remainingVertices = GetAdjacentPositions(vertex).ToList();
-            if (remainingVertices.Count <= 0 && _vertices.All(IsMarked) &&
-                GetAdjacentPositions(vertex, false).Contains(_startVertex)) return true;
+            var vertex = startVertex;
+            var tried = new List<IntVector2>();
+            while (true)
+            {
+                if (!_markedVertices.Contains(vertex)) _markedVertices.Add(vertex);
+                if (!tried.Contains(vertex)) tried.Add(vertex);
+                var remainingVertices = GetAdjacentPositions(vertex, tried).ToList();
 
-            if (Random && remainingVertices.OrderBy(x => Guid.NewGuid()).Any(RecursivePathCalculation)) return true;
-            if (!Random && remainingVertices.Any(RecursivePathCalculation)) return true;
+                if (remainingVertices.Count > 0)
+                {
+                    // Go a step further
+                    vertex = Random ? remainingVertices.OrderBy(x => Guid.NewGuid()).First() : remainingVertices[0];
+                    continue;
+                }
 
-            _markedVertices.Remove(vertex);
-            return false;
+                if (_vertices.All(IsMarked) && GetAdjacentPositions(vertex, onlyUnMarked: false).Contains(startVertex))
+                    return true; // Finished
+
+                // Go a back:
+                _markedVertices.Remove(vertex);
+                if (!_markedVertices.Any()) return false;
+                vertex = _markedVertices.Last();
+            }
         }
 
-        private IEnumerable<IntVector2> GetAdjacentPositions(IntVector2 vertex, bool onlyUnMarked = true)
+        private IEnumerable<IntVector2> GetAdjacentPositions(IntVector2 vertex, ICollection<IntVector2> list = null,
+                                                             bool onlyUnMarked = true)
         {
-            return _vertices.Where(v => !(onlyUnMarked && IsMarked(v)) && vertex.IsAdjacent(v));
+            return _vertices.Where(v => !(onlyUnMarked && IsMarked(v)) && vertex.IsAdjacent(v) &&
+                                        (list == null || !list.Contains(v)));
         }
 
         private bool IsMarked(IntVector2 vertex) { return _markedVertices.Contains(vertex); }
