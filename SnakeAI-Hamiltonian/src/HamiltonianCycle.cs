@@ -22,19 +22,19 @@ namespace SnakeAI_Hamiltonian
                 _vertices[x * size.Y + y] = new IntVector2(x, y);
 
             _startVertex = _vertices[_random.Next(_vertices.Length)];
-            if (RecTest(_startVertex)) return _markedVertices.ToArray();
+            if (RecursivePathCalculation(_startVertex)) return _markedVertices.ToArray();
             throw new CouldNotFindCycleException();
         }
 
-        private bool RecTest(IntVector2 vertex)
+        private bool RecursivePathCalculation(IntVector2 vertex)
         {
             _markedVertices.Add(vertex);
             var remainingVertices = GetAdjacentPositions(vertex).ToList();
             if (remainingVertices.Count <= 0 && _vertices.All(IsMarked) &&
                 GetAdjacentPositions(vertex, false).Contains(_startVertex)) return true;
 
-            if (Random && remainingVertices.OrderBy(x => Guid.NewGuid()).Any(RecTest)) return true;
-            if (!Random && remainingVertices.Any(RecTest)) return true;
+            if (Random && remainingVertices.OrderBy(x => Guid.NewGuid()).Any(RecursivePathCalculation)) return true;
+            if (!Random && remainingVertices.Any(RecursivePathCalculation)) return true;
 
             _markedVertices.Remove(vertex);
             return false;
