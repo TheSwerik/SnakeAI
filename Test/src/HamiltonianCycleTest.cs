@@ -25,7 +25,7 @@ namespace Test
         }
 
         [Test]
-        public void Test3X3Falílure()
+        public void Test3X3Failure()
         {
             var size = new IntVector2(3, 3);
             Assert.Throws<CouldNotFindCycleException>(() => _hamiltonian.CalculateCycle(size));
@@ -43,7 +43,6 @@ namespace Test
         public void Test6X7From55Success()
         {
             var size = new IntVector2(6, 7);
-            // var startPos = new IntVector2(5, 5);
             var startPos = new IntVector2(0, 0);
             foreach (var pos in _hamiltonian.CalculateCycle(size, startPos)) Console.Write(pos + ", ");
             Assert.Pass();

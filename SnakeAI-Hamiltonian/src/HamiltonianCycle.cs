@@ -87,25 +87,21 @@ namespace SnakeAI_Hamiltonian
 
         private bool IsEveryRemainingVertexReachable(IntVector2 startVertex)
         {
-            var marked = new List<IntVector2>(_vertices.Length - _path.Length);
+            var marked = new List<IntVector2>(_vertices.Length);
             marked.AddRange(_vertices.Where(IsMarked));
 
             var neighbors = _vertices.Where(v => startVertex.IsAdjacent(v) && !marked.Contains(v)).ToList();
             while (neighbors.Any())
             {
                 marked.AddRange(neighbors);
-                var tempNeighbors = new List<IntVector2>();
-                foreach (var neighbor in neighbors)
-                    tempNeighbors.AddRange(_vertices
-                                               .Where(v =>
-                                                          !marked.Contains(v) &&
-                                                          neighbors.Any(n => n.IsAdjacent(v))));
-
+                var tempNeighbors = _vertices.Where(v =>
+                                                        !marked.Contains(v) &&
+                                                        neighbors.Any(n => n.IsAdjacent(v))).ToList();
                 neighbors = tempNeighbors;
             }
 
 
-            return marked.Count == _vertices.Length - _path.Length;
+            return marked.Count == _vertices.Length;
         }
 
         private IEnumerable<IntVector2> GetAdjacentVertices(IntVector2 vertex, ICollection<Path> paths = null,
