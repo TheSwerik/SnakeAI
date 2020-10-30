@@ -17,12 +17,16 @@ namespace SnakeAI_Hamiltonian
             _vertices = vertices == null ? new List<IntVector2>(length) : vertices.ToList();
         }
 
+        #region Helper Methods
+
         public void Add(IntVector2 vector2) { _vertices.Add(vector2); }
         public void RemoveTop() { _vertices.RemoveAt(_vertices.Count - 1); }
         public List<IntVector2> ToList() { return _vertices.ToList(); }
         public bool Any() { return _vertices.Any(); }
         public bool Contains(IntVector2 vertex) { return _vertices.Contains(vertex); }
         public IntVector2 Top() { return _vertices.Last(); }
+
+        #endregion
 
         #region Overrides
 

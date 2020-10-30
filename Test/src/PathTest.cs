@@ -41,5 +41,21 @@ namespace Test
             Assert.AreNotSame(path1, path3, "The two are the Same.");
             Assert.AreNotSame(path2, path3, "The two are the Same.");
         }
+
+        [Test]
+        public void TestContains()
+        {
+            var path = new Path(2);
+            path.Add(new IntVector2(7, 5));
+            var vertexValue = new IntVector2(7, 5);
+
+            var vertexReference = new IntVector2(1, 6);
+            path.Add(vertexReference);
+
+            Assert.IsTrue(path.Contains(vertexValue), "Path does not contain Vertex Value. {0} != {1}", path,
+                          vertexValue);
+            Assert.IsTrue(path.Contains(vertexReference), "Path does not contain Vertex Reference. {0} != {1}", path,
+                          vertexReference);
+        }
     }
 }
