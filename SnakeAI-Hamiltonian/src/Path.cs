@@ -19,12 +19,14 @@ namespace SnakeAI_Hamiltonian
 
         #region Helper Methods
 
+        public int Length => _vertices.Count;
         public void Add(IntVector2 vector2) { _vertices.Add(vector2); }
         public void RemoveTop() { _vertices.RemoveAt(_vertices.Count - 1); }
-        public List<IntVector2> ToList() { return _vertices.ToList(); }
-        public bool Any() { return _vertices.Any(); }
-        public bool Contains(IntVector2 vertex) { return _vertices.Contains(vertex); }
         public IntVector2 Top() { return _vertices.Last(); }
+        public bool IsEmpty() { return !_vertices.Any(); }
+        public bool Contains(IntVector2 vertex) { return _vertices.Contains(vertex); }
+        public Path Clone() { return new Path(_vertices.ToList()); }
+        public IEnumerable<IntVector2> ToList() { return _vertices.ToList(); }
 
         #endregion
 

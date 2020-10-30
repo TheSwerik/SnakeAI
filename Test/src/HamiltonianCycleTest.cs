@@ -17,7 +17,7 @@ namespace Test
         }
 
         [Test]
-        public void Test2X2()
+        public void Test2X2Success()
         {
             var size = new IntVector2(2, 2);
             foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
@@ -25,10 +25,18 @@ namespace Test
         }
 
         [Test]
-        public void Test3X3()
+        public void Test3X3Falílure()
         {
             var size = new IntVector2(3, 3);
             Assert.Throws<CouldNotFindCycleException>(() => _hamiltonian.CalculateCycle(size));
+        }
+
+        [Test]
+        public void Test3X4Success()
+        {
+            var size = new IntVector2(3, 4);
+            foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
+            Assert.Pass();
         }
 
         [Test]
@@ -39,17 +47,6 @@ namespace Test
             var size = new IntVector2(_random.Next(2, 10), _random.Next(2, 10));
             if (size.X % 2 == 1 && size.Y % 2 == 1) size.X++;
             Console.WriteLine($"\n{size.X}x{size.Y}");
-            foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
-            Assert.Pass();
-        }
-
-        [Test]
-        // [Timeout(30000)]
-        // [Ignore("This has a high chance of never completing.")]
-        public void TestRandomSuccess34()
-        {
-            // var size = new IntVector2(7, 4);
-            var size = new IntVector2(3, 4);
             foreach (var pos in _hamiltonian.CalculateCycle(size)) Console.Write(pos + ", ");
             Assert.Pass();
         }
