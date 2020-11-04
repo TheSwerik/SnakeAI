@@ -4,7 +4,6 @@ namespace Snake
 {
     public class SnakeMovement : BodyMovement
     {
-        [SerializeField] private float cellSize = 1;
         private Collision _collision;
         private SnakeControls _controls;
         [HideInInspector] public Vector3 Direction { get; private set; } = Vector3.forward;
@@ -27,7 +26,7 @@ namespace Snake
         {
             cachedTransform.position = startPosition = endPosition;
             Direction = _controls.Direction;
-            endPosition += Direction * cellSize;
+            endPosition += Direction * WorldSettings.Instance.cellSize;
             time = 0f;
             if (nextBodyPart != null) nextBodyPart.StartNextMove(startPosition);
             _collision.MadeAnotherMove();

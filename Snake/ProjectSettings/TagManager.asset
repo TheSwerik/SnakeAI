@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Snake
   - Apple
+  - Grid
   layers:
   - Default
   - TransparentFX
