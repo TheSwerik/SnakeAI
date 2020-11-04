@@ -6,9 +6,9 @@ namespace Snake
     {
         [SerializeField] protected float speed = 2;
         [SerializeField] protected bool isMoving = true;
+        [HideInInspector] public Vector3 endPosition;
         private Renderer _renderer;
         protected Transform cachedTransform;
-        public Vector3 endPosition;
         protected BodyMovement nextBodyPart;
         protected Vector3 startPosition;
         protected float time = 1;

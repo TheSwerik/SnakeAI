@@ -6,7 +6,7 @@ namespace Snake
     {
         private Controls _controls;
         private SnakeMovement _movement;
-        public Vector3 Direction { get; private set; } = Vector3.forward;
+        [HideInInspector] public Vector3 Direction { get; private set; } = Vector3.forward;
 
         private void Awake()
         {
