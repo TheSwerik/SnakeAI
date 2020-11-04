@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Snake
@@ -6,8 +5,8 @@ namespace Snake
     public class Collision : MonoBehaviour
     {
         [SerializeField] private GameObject bodyPart;
-        private SnakeMovement _movement;
         private Transform _bodyPartList;
+        private SnakeMovement _movement;
         private Collider _newBodyPartCollider;
 
         private void Awake()
@@ -26,7 +25,8 @@ namespace Snake
                 _movement.AddPart(newBodyPart.GetComponent<BodyMovement>());
                 _newBodyPartCollider = newBodyPart.GetComponent<Collider>();
             }
-            else if (other.CompareTag("Snake") && !other.Equals(_newBodyPartCollider))
+            else if (other.CompareTag("Snake") && !other.Equals(_newBodyPartCollider) &&
+                     _movement.endPosition.Equals(other.GetComponent<BodyMovement>().endPosition))
             {
                 Debug.Log("DIE");
                 Destroy(transform.parent.gameObject);

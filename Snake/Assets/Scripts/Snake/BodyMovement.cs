@@ -8,7 +8,7 @@ namespace Snake
         [SerializeField] protected bool isMoving = true;
         private Renderer _renderer;
         protected Transform cachedTransform;
-        protected Vector3 endPosition;
+        public Vector3 endPosition;
         protected BodyMovement nextBodyPart;
         protected Vector3 startPosition;
         protected float time = 1;

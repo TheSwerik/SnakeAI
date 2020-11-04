@@ -6,7 +6,7 @@ namespace Snake
     public class SnakeMovement : BodyMovement
     {
         [SerializeField] private float cellSize = 1;
-        [SerializeField] private Vector3 direction = Vector3.forward;
+         public Vector3 direction = Vector3.forward;
         private Collision _collision;
 
         private new void Awake()
