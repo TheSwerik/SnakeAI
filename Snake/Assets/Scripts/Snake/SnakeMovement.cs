@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Snake
@@ -6,13 +5,15 @@ namespace Snake
     public class SnakeMovement : BodyMovement
     {
         [SerializeField] private float cellSize = 1;
-         public Vector3 direction = Vector3.forward;
         private Collision _collision;
+        private SnakeControls _controls;
+        public Vector3 Direction { get; private set; } = Vector3.forward;
 
         private new void Awake()
         {
             base.Awake();
             _collision = GetComponent<Collision>();
+            _controls = GetComponent<SnakeControls>();
         }
 
         private void Update()
@@ -25,7 +26,8 @@ namespace Snake
         private void StartNextMove()
         {
             cachedTransform.position = startPosition = endPosition;
-            endPosition += direction * cellSize;
+            Direction = _controls.Direction;
+            endPosition += Direction * cellSize;
             time = 0f;
             if (nextBodyPart != null) nextBodyPart.StartNextMove(startPosition);
             _collision.MadeAnotherMove();
