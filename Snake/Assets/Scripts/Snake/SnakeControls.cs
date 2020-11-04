@@ -17,10 +17,10 @@ namespace Snake
 
         private void Move(Vector2 direction)
         {
-            if (direction.x > .5) _movement.direction = Vector3.right;
-            else if (direction.x < -.5) _movement.direction = Vector3.left;
-            else if (direction.y > .5) _movement.direction = Vector3.forward;
-            else if (direction.y < -.5) _movement.direction = Vector3.back;
+            if (direction.x > .5 && _movement.direction != Vector3.left) _movement.direction = Vector3.right;
+            else if (direction.x < -.5 && _movement.direction != Vector3.right) _movement.direction = Vector3.left;
+            else if (direction.y > .5 && _movement.direction != Vector3.back) _movement.direction = Vector3.forward;
+            else if (direction.y < -.5 && _movement.direction != Vector3.forward) _movement.direction = Vector3.back;
         }
 
         private void OnEnable() { _controls.Enable(); }
