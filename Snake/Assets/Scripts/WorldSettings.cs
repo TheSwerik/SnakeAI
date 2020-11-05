@@ -7,7 +7,7 @@ public class WorldSettings : MonoBehaviour
     private Transform _grid;
     private Transform _mainCamera;
 
-    public float PlaneSize => cellNumber / cellSize / 10; // Plane is 10x10
+    public float PlaneSize => (cellNumber + 1) / cellSize / 10; // Plane is 10x10
 
     public static WorldSettings Instance { get; private set; }
 
@@ -29,6 +29,6 @@ public class WorldSettings : MonoBehaviour
     {
         _grid.localScale = new Vector3(PlaneSize, PlaneSize, PlaneSize);
         _grid.position = new Vector3(cellNumber / 2f, 0, cellNumber / 2f);
-        _mainCamera.transform.position = new Vector3(cellNumber / 2f, 8f, cellNumber / 2f - 2 * cellSize);
+        _mainCamera.transform.position = new Vector3(cellNumber / 2f, 9f, cellNumber / 2f - 2.3f * cellSize);
     }
 }
